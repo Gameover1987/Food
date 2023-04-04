@@ -7,7 +7,7 @@ final class FoodTableViewCell : UITableViewCell {
     
     private lazy var foodImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 0
+        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         return imageView
     }()

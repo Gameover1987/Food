@@ -18,7 +18,9 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
         return collectionView
     }()
     
-    private var categories: [String] = []
+    private var categories: [FoodCategory] = []
+    
+    private var menuViewModel: MenuViewModel!
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -32,14 +34,29 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
         }
     }
     
+    convenience init(menuViewModel: MenuViewModel, reuseIdentifier: String?) {
+        self.init(reuseIdentifier: reuseIdentifier)
+        self.menuViewModel = menuViewModel
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(categories: [String]) {
+    func update(categories: [FoodCategory]) {
         self.categories = categories
         
         collectionView.reloadData()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else {return}
+            
+            let selectedIndex = categories.firstIndex(of: self.menuViewModel.selectedCategory) ?? 0
+            let indexPath = IndexPath(row: selectedIndex, section: 0)
+            
+            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+            self.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+        }
     }
 }
 
@@ -63,6 +80,8 @@ extension FoodCategoriesTableHeader : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! FoodCategoryCollectionViewCell
         cell.select()
+        
+        menuViewModel.selectedCategory = cell.category
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

@@ -3,6 +3,7 @@ import Foundation
 
 final class MenuViewModel {
     
+    private var sourceCollection: [FoodViewModel] = []
     private let foodProvider: FoodProviderProtocol
     
     init(foodProvider: FoodProviderProtocol){
@@ -11,7 +12,23 @@ final class MenuViewModel {
     
     var foodCollection: [FoodViewModel] = []
     
-    func load(completion: @escaping ((_ result: Result<[FoodViewModel], Error>) -> Void)) {
+    var selectedCategory = FoodCategory.all {
+        didSet {
+            foodCollection = sourceCollection.filter({ foodViewModel in
+                if (selectedCategory == .all) {
+                    return true
+                }
+                
+                return foodViewModel.category == selectedCategory
+            })
+            
+            collectionChangedHandler?(selectedCategory)
+        }
+    }
+    
+    var collectionChangedHandler: ((FoodCategory) -> Void)?
+    
+    func load() {
         foodProvider.performFoodRequest { result in
         
             DispatchQueue.main.async { [weak self] in
@@ -22,13 +39,13 @@ final class MenuViewModel {
                     print(error)
                     
                 case .success(let foodCollection):
-                    self.foodCollection = foodCollection.map { food in
-                        return FoodViewModel(food: food)
+                    self.sourceCollection = foodCollection.map { food in
+                        return FoodViewModel(food)
                     }
-                    completion(.success(self.foodCollection))
+                    
+                    self.selectedCategory = .all
                 }
             }
-
         }
     }
 }

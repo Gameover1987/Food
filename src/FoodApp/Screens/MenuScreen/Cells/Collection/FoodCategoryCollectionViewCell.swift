@@ -31,8 +31,15 @@ final class FoodCategoryCollectionViewCell : UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(category: String) {
-        categoryLabel.text = category
+    var category: FoodCategory = .all
+    
+    func update(category: FoodCategory) {
+        self.category = category
+        categoryLabel.text = self.category.toString()
+    }
+    
+    override func select(_ sender: Any?) {
+        select()
     }
     
     func select() {

@@ -33,7 +33,10 @@ final class MenuViewControler : UIViewController {
     
     init(menuViewModel: MenuViewModel) {
         self.menuViewModel = menuViewModel
+       
         super.init(nibName: nil, bundle: nil)
+        
+        self.menuViewModel.collectionChangedHandler = foodClolectionChanged(category:)
     }
     
     required init?(coder: NSCoder) {
@@ -59,11 +62,12 @@ final class MenuViewControler : UIViewController {
 
         tableView.reloadData()
 
-        menuViewModel.load { [weak self] result in
-            guard let self = self else {return}
-
-            self.tableView.reloadData()
-        }
+        menuViewModel.load()
+    }
+    
+    private func foodClolectionChanged(category: FoodCategory) {
+       
+        tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
     }
 }
 
@@ -71,8 +75,8 @@ extension MenuViewControler : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if (section == 1) {
-            let header = FoodCategoriesTableHeader()
-            header.update(categories: ["Pizza", "Steak", "Soup", "Salad"])
+            let header = FoodCategoriesTableHeader(menuViewModel: menuViewModel, reuseIdentifier: nil)
+            header.update(categories: FoodCategory.allCases)
             return header
         }
         
