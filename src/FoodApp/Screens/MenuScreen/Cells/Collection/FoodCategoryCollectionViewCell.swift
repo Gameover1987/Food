@@ -43,7 +43,7 @@ final class FoodCategoryCollectionViewCell : UICollectionViewCell {
     }
     
     func deselect() {
-        backgroundColor = Colors.menuBackground
+        backgroundColor = .clear
         categoryLabel.textColor = Colors.categoryText
         categoryLabel.font = UIFont.systemFont(ofSize: 13)
         layer.borderWidth = 1

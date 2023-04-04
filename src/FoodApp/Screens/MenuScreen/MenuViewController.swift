@@ -4,7 +4,7 @@ import SnapKit
 
 final class MenuViewControler : UIViewController {
 
-    private let names = ["Stacy", "Steve", "Tanya", "Evgeniy", "Sasha", "Kristy", "Ira", "Andrew", "Ed"]
+    private let menuViewModel: MenuViewModel
 
     private lazy var tableView:UITableView = {
         let tableView = UITableView()
@@ -27,6 +27,15 @@ final class MenuViewControler : UIViewController {
         return tableView
     }()
     
+    init(menuViewModel: MenuViewModel) {
+        self.menuViewModel = menuViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
     override func viewDidLoad() {
         
         view.backgroundColor = Colors.menuBackground
@@ -37,6 +46,12 @@ final class MenuViewControler : UIViewController {
         }
         
         tableView.reloadData()
+        
+        menuViewModel.load { [weak self] result in
+            guard let self = self else {return}
+            
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -84,7 +99,7 @@ extension MenuViewControler : UITableViewDataSource {
         case 1:
             return 1
         case 2:
-            return names.count
+            return menuViewModel.foodCollection.count
         default:
             return 0
         }

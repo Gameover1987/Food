@@ -12,7 +12,7 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = Colors.menuBackground
+        collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         
         return collectionView
@@ -23,11 +23,9 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = Colors.menuBackground
-        
         contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.left.equalTo(contentView)
+            make.left.equalTo(contentView).offset(16)
             make.top.equalTo(contentView).offset(24)
             make.height.equalTo(32)
             make.right.equalTo(contentView)

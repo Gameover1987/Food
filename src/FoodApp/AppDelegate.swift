@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         let tabBarController = UITabBarController()
         
-        let menuController = MenuViewControler()
+        let menuController = MenuViewControler(menuViewModel: MenuViewModel(foodProvider: FoodProvider()))
         menuController.tabBarItem.title = "Меню"
         menuController.tabBarItem.image = UIImage(named: "Menu")
         

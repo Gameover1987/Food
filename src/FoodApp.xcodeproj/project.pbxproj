@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800834E529DC29E20027390C /* FoodProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800834E429DC29E20027390C /* FoodProviderProtocol.swift */; };
+		800834E729DC2A1A0027390C /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800834E629DC2A1A0027390C /* Food.swift */; };
 		80E8712B29DA69A1002F2F09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8712A29DA69A1002F2F09 /* AppDelegate.swift */; };
 		80E8713729DA69A2002F2F09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80E8713629DA69A2002F2F09 /* Assets.xcassets */; };
 		80E8714529DA6D1F002F2F09 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8714429DA6D1F002F2F09 /* MenuViewController.swift */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		800834E429DC29E20027390C /* FoodProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodProviderProtocol.swift; sourceTree = "<group>"; };
+		800834E629DC2A1A0027390C /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		80E8712729DA69A1002F2F09 /* FoodApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80E8712A29DA69A1002F2F09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80E8713629DA69A2002F2F09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 		80E8714129DA6CDC002F2F09 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				800834E429DC29E20027390C /* FoodProviderProtocol.swift */,
+				800834E629DC2A1A0027390C /* Food.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -226,6 +232,8 @@
 			files = (
 				80E8712B29DA69A1002F2F09 /* AppDelegate.swift in Sources */,
 				80E8715329DA7B1E002F2F09 /* MenuViewModel.swift in Sources */,
+				800834E729DC2A1A0027390C /* Food.swift in Sources */,
+				800834E529DC29E20027390C /* FoodProviderProtocol.swift in Sources */,
 				80E8714E29DA6EE2002F2F09 /* Colors.swift in Sources */,
 				80E8716129DA88DC002F2F09 /* FoodTableViewCell.swift in Sources */,
 				80E8714529DA6D1F002F2F09 /* MenuViewController.swift in Sources */,
