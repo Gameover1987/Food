@@ -8,11 +8,11 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(BannerCollectionViewCell.self, forCellWithReuseIdentifier: BannerCollectionViewCell.identifier)
+        collectionView.register(FoodCategoryCollectionViewCell.self, forCellWithReuseIdentifier: FoodCategoryCollectionViewCell.identifier)
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
+        collectionView.backgroundColor = Colors.menuBackground
         collectionView.showsHorizontalScrollIndicator = false
         
         return collectionView
@@ -23,7 +23,15 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = Colors.menuBackground
         
+        contentView.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.left.equalTo(contentView)
+            make.top.equalTo(contentView).offset(24)
+            make.height.equalTo(32)
+            make.right.equalTo(contentView)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -32,11 +40,15 @@ final class FoodCategoriesTableHeader : UITableViewHeaderFooterView {
     
     func update(categories: [String]) {
         self.categories = categories
+        
+        collectionView.reloadData()
     }
 }
 
-extension FoodCategoriesTableHeader : UICollectionViewDelegate {
-    
+extension FoodCategoriesTableHeader : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return FoodCategoryCollectionViewCell.size
+    }
 }
 
 extension FoodCategoriesTableHeader : UICollectionViewDataSource {
@@ -45,8 +57,18 @@ extension FoodCategoriesTableHeader : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        fatalError()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoodCategoryCollectionViewCell.identifier, for: indexPath) as! FoodCategoryCollectionViewCell
+        cell.update(category: categories[indexPath.row])
+        return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! FoodCategoryCollectionViewCell
+        cell.select()
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! FoodCategoryCollectionViewCell
+        cell.deselect()
+    }
 }

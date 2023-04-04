@@ -21,16 +21,18 @@ final class CitySelectorTableViewCell : UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        contentView.backgroundColor = Colors.menuBackground
+        
         contentView.addSubview(cityLabel)
         cityLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView).offset(16)
-            make.top.equalTo(contentView).offset(32)
+            make.top.equalTo(contentView).offset(8)
         }
         
         contentView.addSubview(dropDownImage)
         dropDownImage.snp.makeConstraints { make in
             make.left.equalTo(cityLabel.snp.right).offset(8)
-            make.top.equalTo(contentView).offset(39)
+            make.top.equalTo(contentView).offset(16)
         }
     }
     

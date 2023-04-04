@@ -17,13 +17,18 @@ final class BannersTableViewCell : UITableViewCell {
       
         collectionView.showsHorizontalScrollIndicator = false
         
+        collectionView.backgroundColor = Colors.menuBackground
+        
         return collectionView
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-       
+             
+        contentView.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalTo(contentView)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -31,11 +36,15 @@ final class BannersTableViewCell : UITableViewCell {
     }
 }
 
-extension BannersTableViewCell : UICollectionViewDelegate {
-    
+extension BannersTableViewCell : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return BannerCollectionViewCell.size
+    }
 }
 
 extension BannersTableViewCell : UICollectionViewDataSource {
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 2
     }

@@ -3,8 +3,7 @@ import UIKit
 import SnapKit
 
 final class MenuViewControler : UIViewController {
-  
-    
+
     private let names = ["Stacy", "Steve", "Tanya", "Evgeniy", "Sasha", "Kristy", "Ira", "Andrew", "Ed"]
 
     private lazy var tableView:UITableView = {
@@ -15,6 +14,13 @@ final class MenuViewControler : UIViewController {
         tableView.register(CitySelectorTableViewCell.self, forCellReuseIdentifier: CitySelectorTableViewCell.identifier)
         tableView.register(BannersTableViewCell.self, forCellReuseIdentifier: BannersTableViewCell.identifier)
         tableView.register(FoodTableViewCell.self, forCellReuseIdentifier: FoodTableViewCell.identifier)
+        
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = Colors.menuBackground
+        
+        tableView.sectionHeaderTopPadding = 0
+        tableView.sectionFooterHeight = 0.0
+        tableView.sectionHeaderHeight = 0.0
         
         tableView.allowsSelection = false
         
@@ -36,7 +42,7 @@ final class MenuViewControler : UIViewController {
 
 extension MenuViewControler : UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 2 {
+        if (section == 2) {
             let header = FoodCategoriesTableHeader()
             header.update(categories: ["Pizza", "Steak", "Soup", "Salad"])
             return header
@@ -87,7 +93,7 @@ extension MenuViewControler : UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if (indexPath.section == 0) {
-            return 76
+            return 30
         }
         
         if (indexPath.section == 1) {
