@@ -9,19 +9,23 @@ final class MenuViewModel {
         self.foodProvider = foodProvider
     }
     
-    var foodCollection: [Food] = []
+    var foodCollection: [FoodViewModel] = []
     
-    func load(completion: @escaping ((_ result: Result<[Food], Error>) -> Void)) {
+    func load(completion: @escaping ((_ result: Result<[FoodViewModel], Error>) -> Void)) {
         foodProvider.performFoodRequest { result in
         
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else {return}
+                
                 switch result {
                 case .failure(let error):
                     print(error)
                     
                 case .success(let foodCollection):
-                    print(foodCollection)
-                    completion(result)
+                    self.foodCollection = foodCollection.map { food in
+                        return FoodViewModel(food: food)
+                    }
+                    completion(.success(self.foodCollection))
                 }
             }
 

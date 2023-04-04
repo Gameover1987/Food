@@ -3,15 +3,19 @@ import UIKit
 import SnapKit
 
 final class MenuViewControler : UIViewController {
-
+    
     private let menuViewModel: MenuViewModel
-
+    
+    private lazy var citySelector: CitySelectorView = {
+        let citySelector = CitySelectorView()
+        return citySelector
+    }()
+    
     private lazy var tableView:UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.register(CitySelectorTableViewCell.self, forCellReuseIdentifier: CitySelectorTableViewCell.identifier)
         tableView.register(BannersTableViewCell.self, forCellReuseIdentifier: BannersTableViewCell.identifier)
         tableView.register(FoodTableViewCell.self, forCellReuseIdentifier: FoodTableViewCell.identifier)
         
@@ -40,24 +44,33 @@ final class MenuViewControler : UIViewController {
         
         view.backgroundColor = Colors.menuBackground
 
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.left.top.right.bottom.equalTo(view.safeAreaLayoutGuide)
+        view.addSubview(citySelector)
+        citySelector.arrange()
+        citySelector.snp.makeConstraints { make in
+            make.left.top.right.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(40)
         }
         
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(citySelector.snp.bottom)
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+
         tableView.reloadData()
-        
+
         menuViewModel.load { [weak self] result in
             guard let self = self else {return}
-            
+
             self.tableView.reloadData()
         }
     }
 }
 
 extension MenuViewControler : UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if (section == 2) {
+        if (section == 1) {
             let header = FoodCategoriesTableHeader()
             header.update(categories: ["Pizza", "Steak", "Soup", "Salad"])
             return header
@@ -69,18 +82,16 @@ extension MenuViewControler : UITableViewDelegate {
 
 extension MenuViewControler : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath.section == 0) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: CitySelectorTableViewCell.identifier, for: indexPath) as! CitySelectorTableViewCell
-            return cell
-        }
         
-        if (indexPath.section == 1) {
+        if (indexPath.section == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: BannersTableViewCell.identifier, for: indexPath) as! BannersTableViewCell
             return cell
         }
         
-        if (indexPath.section == 2) {
+        if (indexPath.section == 1) {
             let cell = tableView.dequeueReusableCell(withIdentifier: FoodTableViewCell.identifier, for: indexPath) as! FoodTableViewCell
+            let food = menuViewModel.foodCollection[indexPath.row]
+            cell.update(by: food)
             return cell
         }
         
@@ -97,8 +108,6 @@ extension MenuViewControler : UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return 1
-        case 2:
             return menuViewModel.foodCollection.count
         default:
             return 0
@@ -106,16 +115,12 @@ extension MenuViewControler : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
+      
         if (indexPath.section == 0) {
-            return 30
-        }
-        
-        if (indexPath.section == 1) {
             return 112
         }
         
-        if (indexPath.section == 2) {
+        if (indexPath.section == 1) {
             return 172
         }
         
@@ -123,7 +128,7 @@ extension MenuViewControler : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == 2) {
+        if (section == 1) {
             return 80
         }
         
